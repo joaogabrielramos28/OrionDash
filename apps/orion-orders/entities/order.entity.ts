@@ -1,6 +1,5 @@
 import { Entity, Column, OneToMany } from 'typeorm';
-import {  } from '@orion/contracts';
-
+import {} from '@orion/contracts';
 @Entity('orders')
 export class Order extends BaseEntity {
   @Column()
@@ -9,7 +8,7 @@ export class Order extends BaseEntity {
   @Column()
   restaurantId: string;
 
-  @Column({ type: 'enum', enum: OrderStatus, default: OrderStatus. })
+  @Column({ type: 'enum', enum: OrderStatus, default: OrderStatus })
   status: OrderStatus;
 
   @Column({ type: 'decimal', precision: 10, scale: 2 })
