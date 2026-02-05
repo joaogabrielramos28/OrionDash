@@ -2,8 +2,8 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { DatabaseModule } from '@orion/db';
-import { Order } from './entities/order.entity';
-import { OrderItem } from './entities/order-item.entity';
+import { Order } from './database/entities/order.entity';
+import { OrderItem } from './database/entities/order-item.entity';
 import { ConfigModule } from '@nestjs/config';
 @Module({
   imports: [

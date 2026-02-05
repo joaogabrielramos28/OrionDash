@@ -6,6 +6,7 @@ export interface DatabaseModuleOptions {
   entities: any[];
 }
 @Module({})
+@Module({})
 export class DatabaseModule {
   static forRoot(options: DatabaseModuleOptions): DynamicModule {
     return {
@@ -21,18 +22,15 @@ export class DatabaseModule {
             username: config.getOrThrow("DB_USER"),
             password: config.getOrThrow("DB_PASSWORD"),
             database: config.getOrThrow("DB_NAME"),
-            schema: "public",
+            schema: config.get("DB_SCHEMA", "public"),
 
             entities: options.entities,
+
             synchronize: config.get("NODE_ENV") !== "production",
             logging: config.get("DB_LOGGING", "false") === "true",
-            migrations: [__dirname + "/migrations/**/*{.ts,.js}"],
-            migrationsRun: config.get("RUN_MIGRATIONS", "true") === "true",
-            extra: {
-              max: config.get("DB_POOL_MAX", 10),
-              min: config.get("DB_POOL_MIN", 2),
-              idleTimeoutMillis: config.get("DB_IDLE_TIMEOUT", 30000),
-            },
+
+            migrations: [],
+            migrationsRun: false,
           }),
         }),
       ],

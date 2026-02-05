@@ -2,11 +2,14 @@
   "name": "@orion/db",
   "version": "1.0.0",
   "description": "",
-  "type": "module",
+  "type": "commonjs",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "migration:generate": "SERVICE_NAME=$SERVICE typeorm migration:generate",
+    "migration:run": "SERVICE_NAME=$SERVICE typeorm migration:run",
+    "migration:revert": "SERVICE_NAME=$SERVICE typeorm migration:revert"
   },
   "keywords": [],
   "author": "",
@@ -23,12 +26,5 @@
     "@types/node": "^22.10.7",
     "dotenv": "^17.2.3",
     "typescript": "^5.7.3"
-  },
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "require": "./dist/index.js"
-    }
   }
 }

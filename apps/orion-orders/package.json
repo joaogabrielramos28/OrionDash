@@ -5,8 +5,11 @@
   "author": "",
   "private": true,
   "license": "UNLICENSED",
+  "type": "commonjs",
   "scripts": {
-    "build": "nest build",
+    "migration:gen": "typeorm-ts-node-commonjs migration:generate ./src/database/migrations/${npm_config_name:-Migration} -d ./src/database/data-source.ts",
+    "migration:run": "typeorm-ts-node-commonjs migration:run -d ./src/database/data-source.ts",
+    "migration:revert": "typeorm-ts-node-commonjs migration:revert -d ./src/database/data-source.ts",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
@@ -26,6 +29,7 @@
     "@nestjs/platform-express": "^11.0.1",
     "@orion/contracts": "workspace:*",
     "@orion/db": "workspace:*",
+    "dotenv": "^17.2.3",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
     "typeorm": "^0.3.28"
@@ -53,6 +57,7 @@
     "ts-loader": "^9.5.2",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
+    "typeorm-ts-node-esm": "^0.3.20",
     "typescript": "^5.7.3",
     "typescript-eslint": "^8.20.0"
   },

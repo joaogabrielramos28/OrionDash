@@ -1,0 +1,24 @@
+import 'reflect-metadata';
+import { DataSource } from 'typeorm';
+import * as dotenv from 'dotenv';
+import { Order } from './entities/order.entity';
+import { OrderItem } from './entities/order-item.entity';
+
+dotenv.config();
+
+export const OrdersDataSource = new DataSource({
+  type: 'postgres',
+  host: process.env.POSTGRES_HOST || 'localhost',
+  port: parseInt(process.env.POSTGRES_PORT || '5432'),
+  username: process.env.POSTGRES_USER || 'orders_use33r',
+  password: process.env.POSTGRES_PASSWORD || 'orders_secret',
+  database: process.env.POSTGRES_DB || 'orders_db',
+  schema: 'public',
+
+  entities: [Order, OrderItem],
+
+  migrations: [__dirname + '/migrations/*{.ts,.js}'],
+
+  synchronize: false,
+  logging: true,
+});
