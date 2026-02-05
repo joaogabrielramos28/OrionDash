@@ -1,6 +1,7 @@
 {
   "name": "@orion/contracts",
   "version": "1.0.0",
+  "private": true,
   "description": "",
   "type": "module",
   "main": "./dist/index.js",
@@ -13,13 +14,10 @@
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^22.10.7",
-    "typescript": "^5.7.3"
+    "typescript": "^5.7.3",
+    "@orion/typescript-config": "workspace:*"
   },
   "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "require": "./dist/index.js"
-    }
+    ".": "./dist/index.js"
   }
 }

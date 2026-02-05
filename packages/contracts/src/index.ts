@@ -1,1 +1,1 @@
-export * from "./enum/order";
+export { OrderStatus } from "./enum/order.ts";
