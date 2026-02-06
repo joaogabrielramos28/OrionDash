@@ -20,13 +20,13 @@ export class OrderItem extends BaseEntity {
   @Column({ type: 'text', nullable: true })
   productDescription?: string;
 
-  @Column({ type: 'decimal', precision: 10, scale: 2, name: 'unit_price' })
+  @Column({ type: 'int', name: 'unit_price' })
   unitPrice: number;
 
   @Column({ type: 'int' })
   quantity: number;
 
-  @Column({ type: 'decimal', precision: 10, scale: 2 })
+  @Column({ type: 'int' })
   subtotal: number;
 
   // Imagem do produto (snapshot da URL)

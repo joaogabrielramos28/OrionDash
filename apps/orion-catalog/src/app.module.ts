@@ -4,12 +4,11 @@ import { AppService } from './app.service';
 import { DatabaseModule } from '@orion/db';
 
 import { ConfigModule } from '@nestjs/config';
-import { Order } from './database/entities/order.entity';
-import { OrderItem } from './database/entities/order-item.entity';
+import { Category, Product, Restaurant } from './database/entities';
 @Module({
   imports: [
     DatabaseModule.forRoot({
-      entities: [Order, OrderItem],
+      entities: [Category, Product, Restaurant],
     }),
     ConfigModule.forRoot({
       isGlobal: true,

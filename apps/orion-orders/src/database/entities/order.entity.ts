@@ -14,7 +14,7 @@ export class Order extends BaseEntity {
   @Column({ type: 'enum', enum: OrderStatus, default: OrderStatus.CREATED })
   status: OrderStatus;
 
-  @Column({ type: 'decimal', precision: 10, scale: 2, name: 'total_amount' })
+  @Column({ type: 'int', name: 'total_amount' })
   totalAmount: number;
 
   @Column({ nullable: true, name: 'courier_id' })

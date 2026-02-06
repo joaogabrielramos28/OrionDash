@@ -4,7 +4,9 @@
         "build": "turbo run build",
         "dev": "turbo run dev",
         "lint": "turbo run lint",
-        "docker:up": "docker-compose up -d"
+        "docker:up": "docker-compose up -d",
+        "start:dev": "turbo run start:dev",
+        "migration:gen": "turbo run migration:gen"
     },
     "devDependencies": {
         "turbo": "latest"

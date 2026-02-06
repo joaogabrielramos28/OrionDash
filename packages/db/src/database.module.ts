@@ -6,7 +6,6 @@ export interface DatabaseModuleOptions {
   entities: any[];
 }
 @Module({})
-@Module({})
 export class DatabaseModule {
   static forRoot(options: DatabaseModuleOptions): DynamicModule {
     return {
@@ -17,12 +16,12 @@ export class DatabaseModule {
           inject: [ConfigService],
           useFactory: (config: ConfigService) => ({
             type: "postgres",
-            host: config.getOrThrow("DB_HOST"),
-            port: config.get("DB_PORT", 5432),
-            username: config.getOrThrow("DB_USER"),
-            password: config.getOrThrow("DB_PASSWORD"),
-            database: config.getOrThrow("DB_NAME"),
-            schema: config.get("DB_SCHEMA", "public"),
+            host: config.getOrThrow("POSTGRES_HOST"),
+            port: config.get("POSTGRES_PORT", 5432),
+            username: config.getOrThrow("POSTGRES_USER"),
+            password: config.getOrThrow("POSTGRES_PASSWORD"),
+            database: config.getOrThrow("POSTGRES_DB"),
+            schema: config.get("POSTGRES_SCHEMA", "public"),
 
             entities: options.entities,
 
