@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import { DataSource } from 'typeorm';
 import * as dotenv from 'dotenv';
-import { Category, Product, Restaurant } from './entities';
+import { Category, Product, Restaurant } from '../modules/entities';
 dotenv.config();
 
 export const OrdersDataSource = new DataSource({
@@ -13,7 +13,7 @@ export const OrdersDataSource = new DataSource({
   database: process.env.POSTGRES_DB || 'orders_db',
   schema: 'public',
 
-  entities: [Category, Product, Restaurant],
+  entities: ['../modules/entities/*.ts'],
 
   migrations: [__dirname + '/migrations/*{.ts,.js}'],
 

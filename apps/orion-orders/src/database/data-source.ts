@@ -1,8 +1,8 @@
 import 'reflect-metadata';
 import { DataSource } from 'typeorm';
 import * as dotenv from 'dotenv';
-import { OrderItem } from './entities/order-item.entity';
-import { Order } from './entities/order.entity';
+import { OrderItem } from './../modules/entities/order-item.entity';
+import { Order } from './../modules/entities//order.entity';
 dotenv.config();
 
 export const OrdersDataSource = new DataSource({

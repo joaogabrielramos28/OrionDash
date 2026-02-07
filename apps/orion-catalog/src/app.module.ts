@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { DatabaseModule } from '@orion/db';
 
 import { ConfigModule } from '@nestjs/config';
-import { Category, Product, Restaurant } from './database/entities';
+import { Category, Product, Restaurant } from './modules/entities';
+import { RestaurantModule } from './modules/restaurant/restaurant.module';
+import { CategoryModule } from './modules/category/category.module';
+import { ProductModule } from './modules/product/product.module';
 @Module({
   imports: [
     DatabaseModule.forRoot({
@@ -14,8 +15,9 @@ import { Category, Product, Restaurant } from './database/entities';
       isGlobal: true,
       envFilePath: '.env',
     }),
+    RestaurantModule,
+    CategoryModule,
+    ProductModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}

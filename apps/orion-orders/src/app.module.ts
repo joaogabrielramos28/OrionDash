@@ -4,8 +4,8 @@ import { AppService } from './app.service';
 import { DatabaseModule } from '@orion/db';
 
 import { ConfigModule } from '@nestjs/config';
-import { Order } from './database/entities/order.entity';
-import { OrderItem } from './database/entities/order-item.entity';
+import { Order } from './modules/entities/order.entity';
+import { OrderItem } from './modules/entities/order-item.entity';
 @Module({
   imports: [
     DatabaseModule.forRoot({
