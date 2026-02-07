@@ -6,3 +6,5 @@ export {
   ProductData,
   ProductService,
 } from "./enum/product-proto";
+export { GetResponse } from "./enum/get";
+export { HttpExceptionFilter } from "./filters/http-exception.filter";

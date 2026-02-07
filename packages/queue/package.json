@@ -1,10 +1,11 @@
 {
-  "name": "queue",
+  "name": "@orion/queue",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc"
   },
   "keywords": [],
   "author": "",
@@ -14,5 +15,10 @@
     "@nestjs/config": "^4.0.3",
     "amqp-connection-manager": "^5.0.0",
     "amqplib": "^0.10.9"
+  },
+  "devDependencies": {
+    "@orion/typescript-config": "workspace:*",
+    "@types/amqplib": "^0.10.1",
+    "typescript": "^5.0.0"
   }
 }

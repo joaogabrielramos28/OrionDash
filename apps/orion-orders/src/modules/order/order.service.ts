@@ -1,10 +1,11 @@
-import { BadRequestException, Injectable, OnModuleInit } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Order } from '../entities/order.entity';
 import { OrderItem } from '../entities/order-item.entity';
 import { CatalogClientService } from '../../integrations/catalog/catalog-client.service';
 import { Repository } from 'typeorm';
-import { ProductData } from '@orion/contracts';
+import { GetResponse } from '@orion/contracts';
+import { EXCHANGES, RabbitMQService, ROUTING_KEYS } from '@orion/queue';
 
 @Injectable()
 export class OrderService {
@@ -12,6 +13,7 @@ export class OrderService {
     @InjectRepository(Order)
     private readonly orderRepository: Repository<Order>,
     private readonly catalogClient: CatalogClientService,
+    private readonly queueService: RabbitMQService,
   ) {}
 
   public async getOrder(id: string): Promise<Order> {
@@ -73,6 +75,28 @@ export class OrderService {
       totalAmount: orderTotalAmount,
     });
 
+    await this.queueService.publish(
+      EXCHANGES.MAIN,
+      ROUTING_KEYS.ORDER_CREATED,
+      {
+        orderId: order.id,
+        restaurantId: order.restaurantId,
+      },
+    );
+
     return await this.orderRepository.save(order);
+  }
+
+  async findOrdersByCustomer(customerId: string): Promise<GetResponse<Order>> {
+    const [orders, count] = await this.orderRepository.findAndCount({
+      where: {
+        customerId,
+      },
+    });
+
+    return {
+      data: orders,
+      count,
+    };
   }
 }

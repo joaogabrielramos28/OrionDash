@@ -1,0 +1,12 @@
+{
+  "extends": "@orion/typescript-config/base.json",
+  "compilerOptions": {
+    "outDir": "./dist"
+  },
+  "exclude": [
+    "node_modules",
+    "dist",
+    "**/*.spec.ts",
+    "**/*.test.ts"
+  ]
+}

@@ -32,6 +32,7 @@
     "@nestjs/platform-express": "^11.0.1",
     "@nestjs/typeorm": "^11.0.0",
     "@orion/contracts": "workspace:*",
+    "@orion/queue": "workspace:*",
     "@orion/db": "workspace:*",
     "dotenv": "^17.2.3",
     "reflect-metadata": "^0.2.2",
