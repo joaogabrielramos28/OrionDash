@@ -4,6 +4,8 @@ import { Product } from '../entities';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CategoryService } from '../category/category.service';
 import { FindAllProduct } from './dto/find-all.dto';
+import { In } from 'typeorm';
+import { GetProductsRequest, GetProductsResponse } from '@orion/contracts';
 
 @Injectable()
 export class ProductService {
@@ -67,5 +69,25 @@ export class ProductService {
     if (!product) {
       throw new HttpException('Product not found', HttpStatus.NOT_FOUND);
     }
+  }
+
+  async findProductsByIds({
+    productIds,
+    restaurantId,
+  }: GetProductsRequest): Promise<GetProductsResponse> {
+    const products = await this.productRepository.find({
+      where: {
+        id: In(productIds),
+        restaurantId,
+        isActive: true,
+      },
+    });
+
+    return {
+      products: products.map((item) => ({
+        ...item,
+        priceVersion: item.updatedAt.getTime(),
+      })),
+    };
   }
 }

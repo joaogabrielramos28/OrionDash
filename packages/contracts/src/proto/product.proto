@@ -1,0 +1,28 @@
+
+syntax = "proto3";
+
+package product;
+
+service ProductService {
+  rpc GetProductsForOrder (GetProductsForOrderRequest) returns (GetProductsForOrderResponse) {}
+}
+
+message GetProductsForOrderRequest {
+  string restaurantId = 1;
+  repeated string productIds = 2;
+}
+
+
+
+message ProductForOrder {
+  string id = 1;
+  string restaurantId = 2;
+  string name = 3;
+  int32 price = 4;
+  bool isActive = 5;
+  int64 priceVersion = 6; 
+}
+
+message GetProductsForOrderResponse {
+  repeated ProductForOrder products = 1;
+}

@@ -1,5 +1,5 @@
 import { Entity, Column, OneToMany } from 'typeorm';
-import { OrderStatus } from '@orion/contracts';
+import { Address, OrderStatus } from '@orion/contracts';
 import { BaseEntity } from '@orion/db';
 import { OrderItem } from './order-item.entity';
 
@@ -24,16 +24,7 @@ export class Order extends BaseEntity {
   paymentId?: string;
 
   @Column({ type: 'jsonb', name: 'delivery_address' })
-  deliveryAddress: {
-    street: string;
-    number: string;
-    neighborhood: string;
-    city: string;
-    state: string;
-    zipCode: string;
-    complement?: string;
-    coordinates: { lat: number; lng: number };
-  };
+  deliveryAddress: Address;
 
   @OneToMany(() => OrderItem, (item) => item.order, {
     cascade: true,

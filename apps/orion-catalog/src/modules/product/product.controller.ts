@@ -9,6 +9,7 @@ import {
 } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { Product } from '../entities';
+import { GrpcMethod } from '@nestjs/microservices';
 
 @Controller('/product')
 export class ProductController {

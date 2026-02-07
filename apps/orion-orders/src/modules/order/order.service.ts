@@ -1,14 +1,17 @@
-import { Injectable } from '@nestjs/common';
-import { BaseRepository } from '@orion/db';
+import { BadRequestException, Injectable, OnModuleInit } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Order } from '../entities/order.entity';
 import { OrderItem } from '../entities/order-item.entity';
+import { CatalogClientService } from '../../integrations/catalog/catalog-client.service';
+import { Repository } from 'typeorm';
+import { ProductData } from '@orion/contracts';
 
 @Injectable()
 export class OrderService {
   constructor(
     @InjectRepository(Order)
-    private readonly orderRepository: BaseRepository<Order>,
+    private readonly orderRepository: Repository<Order>,
+    private readonly catalogClient: CatalogClientService,
   ) {}
 
   public async getOrder(id: string): Promise<Order> {
@@ -23,16 +26,45 @@ export class OrderService {
     return items.reduce((acc, current) => acc + current.subtotal, 0);
   }
 
-  private calculateOrderItemsSubtotal(items: OrderItem[]) {
-    const orderItemCalculated = items.map((item) => ({
-      ...item,
-      subtotal: item.quantity * item.unitPrice,
-    }));
-    return orderItemCalculated;
-  }
-
   public async createOrder(orderData: Partial<Order>): Promise<Order> {
-    const itemsWithSubtotal = this.calculateOrderItemsSubtotal(orderData.items);
+    const hasAtLeastOneItemWithoutQuantity = orderData.items.some(
+      (item) => !item.quantity || item.quantity <= 0,
+    );
+
+    if (hasAtLeastOneItemWithoutQuantity) {
+      throw new BadRequestException(
+        'All items must have a quantity greater than zero',
+      );
+    }
+
+    const products = await this.catalogClient.getProductsForOrder({
+      restaurantId: orderData.restaurantId,
+      productIds: orderData.items.map((item) => item.productId),
+    });
+
+    const itemsWithSubtotal = orderData.items.map((item) => {
+      const product = products.find((p) => p.id === item.productId);
+
+      if (!product) {
+        throw new BadRequestException(
+          `Product with ID ${item.productId} not found for this restaurant`,
+        );
+      }
+
+      return {
+        ...item,
+        unitPrice: product.price,
+        subtotal: product.price * item.quantity,
+        priceVersion: String(product.priceVersion),
+      };
+    });
+
+    if (products.length !== orderData.items.length) {
+      throw new BadRequestException(
+        'Some products are invalid for this restaurant',
+      );
+    }
+
     const orderTotalAmount = this.calculateOrderTotal(itemsWithSubtotal);
 
     const order = this.orderRepository.create({

@@ -1,10 +1,12 @@
 import { Module } from '@nestjs/common';
 import { OrderService } from './order.service';
 import { OrderController } from './order.controller';
-import { DatabaseModule } from '@orion/db';
+import { CatalogIntegrationModule } from '../../integrations/catalog/catalog-integration.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Order } from '../entities/order.entity';
 
 @Module({
-  imports: [DatabaseModule],
+  imports: [TypeOrmModule.forFeature([Order]), CatalogIntegrationModule],
   controllers: [OrderController],
   providers: [OrderService],
 })

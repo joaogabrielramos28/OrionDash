@@ -29,15 +29,15 @@ export class OrderItem extends BaseEntity {
   @Column({ type: 'int' })
   subtotal: number;
 
-  // Imagem do produto (snapshot da URL)
+  @Column({ type: 'bigint', name: 'price_version', nullable: true })
+  priceVersion: string;
+
   @Column({ name: 'product_image_url', nullable: true })
   productImageUrl?: string;
 
-  // Categoria do produto (para analytics)
   @Column({ nullable: true })
   category?: string;
 
-  // Se o item foi removido/cancelado individualmente
   @Column({ default: false, name: 'is_cancelled' })
   isCancelled: boolean;
 
