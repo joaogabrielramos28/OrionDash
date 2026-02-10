@@ -11,5 +11,6 @@ enum OrderStatus {
   DELIVERED = "delivered",
   CANCELLED = "cancelled",
   REFUNDED = "refunded",
+  PROCESSING = "processing",
 }
 export { OrderStatus };

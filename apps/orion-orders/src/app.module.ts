@@ -33,7 +33,6 @@ import { RabbitMQModule, EXCHANGES, QUEUES, ROUTING_KEYS } from '@orion/queue';
           options: { durable: true },
         },
       ],
-
       queues: [
         {
           name: QUEUES.ORDER_PAYMENT_SUCCEEDED,
@@ -45,10 +44,16 @@ import { RabbitMQModule, EXCHANGES, QUEUES, ROUTING_KEYS } from '@orion/queue';
             deadLetterRoutingKey: ROUTING_KEYS.ORDER_PAYMENT_SUCCEEDED_FAILED,
           },
         },
+
+        {
+          name: QUEUES.ORDER_PAYMENT_FAILED,
+          exchange: EXCHANGES.MAIN,
+          routingKey: ROUTING_KEYS.ORDER_PAYMENT_FAILED,
+          options: { durable: true },
+        },
       ],
       prefetchCount: 10,
     }),
-
     OrderModule,
   ],
 

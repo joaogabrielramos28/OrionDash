@@ -4,7 +4,7 @@ import { Order } from '../entities/order.entity';
 import { OrderItem } from '../entities/order-item.entity';
 import { CatalogClientService } from '../../integrations/catalog/catalog-client.service';
 import { Repository } from 'typeorm';
-import { GetResponse } from '@orion/contracts';
+import { GetResponse, OrderStatus } from '@orion/contracts';
 import { EXCHANGES, RabbitMQService, ROUTING_KEYS } from '@orion/queue';
 
 @Injectable()
@@ -75,16 +75,19 @@ export class OrderService {
       totalAmount: orderTotalAmount,
     });
 
+    const createdOrder = await this.orderRepository.save(order);
+
     await this.queueService.publish(
       EXCHANGES.MAIN,
       ROUTING_KEYS.ORDER_CREATED,
       {
-        orderId: order.id,
-        restaurantId: order.restaurantId,
+        orderId: createdOrder.id,
+        restaurantId: createdOrder.restaurantId,
+        amount: createdOrder.totalAmount,
       },
     );
 
-    return await this.orderRepository.save(order);
+    return createdOrder;
   }
 
   async findOrdersByCustomer(customerId: string): Promise<GetResponse<Order>> {
@@ -98,5 +101,20 @@ export class OrderService {
       data: orders,
       count,
     };
+  }
+
+  async updateOrderStatus(
+    orderId: string,
+    status: OrderStatus,
+  ): Promise<Order> {
+    const order = await this.orderRepository.findOneBy({ id: orderId });
+
+    if (!order) {
+      throw new BadRequestException('Order not found');
+    }
+
+    order.status = status;
+
+    return await this.orderRepository.save(order);
   }
 }
