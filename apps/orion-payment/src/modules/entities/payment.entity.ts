@@ -16,9 +16,9 @@ export class Payment extends BaseEntity {
   @Column({ default: 'stripe' })
   provider: string;
 
-  @Column({ default: 'provider_transaction_id', nullable: true })
+  @Column({ name: 'provider_transaction_id', nullable: true })
   providerTransactionId?: string;
 
-  @Column({ default: 'correlation_id', nullable: true })
+  @Column({ name: 'correlation_id', nullable: true })
   correlationId?: string;
 }
