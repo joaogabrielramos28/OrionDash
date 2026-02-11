@@ -1,6 +1,5 @@
 services:
   postgres-orders:
-    container_name: orion-db-orders
     image: postgres:17-alpine
     env_file: ./apps/orion-orders/.env
     volumes:
@@ -14,7 +13,6 @@ services:
       retries: 5
 
   postgres-catalog:
-    container_name: orion-db-catalog
     image: postgres:17-alpine
     env_file: ./apps/orion-catalog/.env
     volumes:
@@ -27,7 +25,6 @@ services:
       timeout: 5s
       retries: 5
   postgres-payment:
-    container_name: orion-db-payment
     image: postgres:17-alpine
     env_file: ./apps/orion-payment/.env
     volumes:
@@ -39,9 +36,22 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+  postgres-dispatch:
+    image: postgres:17-alpine
+    env_file: ./apps/orion-dispatch/.env
+    volumes:
+      - postgres-dispatch:/var/lib/postgresql/data
+    ports:
+      - '5435:5432'
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+      
 
   rabbit-mqueue:
-    container_name: orion-rabbitmq
     hostname: orion-rabbitmq
     image: rabbitmq:3-management  # Recomendo usar tag específica
     restart: always
@@ -57,6 +67,15 @@ services:
       retries: 5
       start_period: 30s
 
+  orion-redis:
+    image: redis:7-alpine
+    hostname: orion-redis
+    restart: always
+    ports:
+      - '6379:6379'
+    volumes:
+      - redis_data:/data
+
 volumes:
   postgres-orders:
     driver: local
@@ -64,5 +83,9 @@ volumes:
     driver: local
   postgres-payment:
     driver: local
+  postgres-dispatch:
+    driver: local
   rabbit-mqueue:
+    driver: local
+  redis_data:
     driver: local

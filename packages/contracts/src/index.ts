@@ -8,3 +8,4 @@ export {
 } from "./enum/product-proto";
 export { GetResponse } from "./enum/get";
 export { HttpExceptionFilter } from "./filters/http-exception.filter";
+export { CourierStatus } from "./enum/courier";

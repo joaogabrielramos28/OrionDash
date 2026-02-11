@@ -1,0 +1,23 @@
+{
+  "name": "@orion/redis",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@nestjs/common": "^11.0.1",
+    "@nestjs/config": "^4.0.3",
+    "ioredis": "^5.9.2"
+  },
+  "devDependencies": {
+    "@orion/typescript-config": "workspace:*",
+    "@types/amqplib": "^0.10.1",
+    "typescript": "^5.0.0"
+  }
+}

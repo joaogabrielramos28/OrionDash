@@ -115,6 +115,16 @@ export class OrderService {
 
     order.status = status;
 
-    return await this.orderRepository.save(order);
+    const updatedOrder = await this.orderRepository.save(order);
+
+    if (status === OrderStatus.PAID) {
+      await this.queueService.publish(EXCHANGES.MAIN, ROUTING_KEYS.ORDER_PAID, {
+        orderId: updatedOrder.id,
+        customerId: updatedOrder.customerId,
+        origin: updatedOrder.deliveryAddress,
+      });
+    }
+
+    return updatedOrder;
   }
 }
