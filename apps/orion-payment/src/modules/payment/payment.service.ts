@@ -14,7 +14,7 @@ export class PaymentService {
     private readonly rabbit: RabbitMQService,
   ) {}
 
-  public async processPayment(data: ProcessPaymentDTO) {
+  async processPayment(data: ProcessPaymentDTO) {
     const existing = await this.paymentRepository.findOne({
       where: { orderId: data.orderId },
     });
@@ -62,5 +62,20 @@ export class PaymentService {
       },
       { correlationId: data.correlationId },
     );
+  }
+
+  async processRefund(orderId: string) {
+    const existing = await this.paymentRepository.findOne({
+      where: { orderId },
+    });
+
+    if (!existing || existing.status !== OrderStatus.PAID) {
+      throw new Error(
+        'Pagamento não encontrado ou não é elegível para reembolso',
+      );
+    }
+
+    existing.status = OrderStatus.REFUNDED;
+    await this.paymentRepository.save(existing);
   }
 }

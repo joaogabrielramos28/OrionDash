@@ -44,11 +44,16 @@ import { RabbitMQModule, EXCHANGES, QUEUES, ROUTING_KEYS } from '@orion/queue';
             deadLetterRoutingKey: ROUTING_KEYS.ORDER_PAYMENT_SUCCEEDED_FAILED,
           },
         },
-
         {
           name: QUEUES.ORDER_PAYMENT_FAILED,
           exchange: EXCHANGES.MAIN,
           routingKey: ROUTING_KEYS.ORDER_PAYMENT_FAILED,
+          options: { durable: true },
+        },
+        {
+          name: QUEUES.DISPATCH_FAILED,
+          exchange: EXCHANGES.MAIN,
+          routingKey: ROUTING_KEYS.DISPATCH_FAILED,
           options: { durable: true },
         },
       ],
@@ -68,4 +73,3 @@ import { RabbitMQModule, EXCHANGES, QUEUES, ROUTING_KEYS } from '@orion/queue';
   ],
 })
 export class AppModule {}
-console.log('RABBITMQ_URL (orders) =', process.env.RABBITMQ_URL);

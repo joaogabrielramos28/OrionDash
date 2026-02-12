@@ -54,9 +54,10 @@ import { CourierGeoModule } from './modules/courier-geo/courier-geo.module';
         },
       ],
     }),
+
     RedisModule,
-    DispatchModule,
     CourierGeoModule,
+    DispatchModule,
   ],
 })
 export class AppModule {}

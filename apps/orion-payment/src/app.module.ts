@@ -40,6 +40,16 @@ import { EXCHANGES, QUEUES, RabbitMQModule, ROUTING_KEYS } from '@orion/queue';
             deadLetterRoutingKey: ROUTING_KEYS.ORDER_CREATED_FAILED,
           },
         },
+        {
+          name: QUEUES.ORDER_PAYMENT_REFUNDED,
+          exchange: EXCHANGES.MAIN,
+          routingKey: ROUTING_KEYS.ORDER_PAYMENT_REFUNDED,
+          options: {
+            durable: true,
+            deadLetterExchange: EXCHANGES.DLX,
+            deadLetterRoutingKey: ROUTING_KEYS.ORDER_PAYMENT_REFUNDED_FAILED,
+          },
+        },
       ],
     }),
 

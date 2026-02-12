@@ -6,8 +6,6 @@ export class CourierGeoService {
   constructor(@Inject(REDIS) private readonly redis: Redis) {}
 
   async setAvailable(courierId: string, lat: number, long: number) {
-    console.log('here');
-
     await this.redis.geoadd(
       CACHE_KEY.COURIER_GEO_AVAILABLE,
       lat,
@@ -21,17 +19,19 @@ export class CourierGeoService {
   }
 
   async findNearby(lng: number, lat: number, radiusKm = 5, count = 10) {
-    return this.redis.geosearch(
+    const couriers = await this.redis.geosearch(
       CACHE_KEY.COURIER_GEO_AVAILABLE,
       'FROMLONLAT',
-      String(lng),
-      String(lat),
+      lat,
+      lng,
       'BYRADIUS',
-      String(radiusKm),
+      radiusKm,
       'KM',
-      'COUNT',
-      String(count),
       'ASC',
-    ) as Promise<string[]>;
+      'COUNT',
+      count,
+    );
+
+    return couriers as string[];
   }
 }

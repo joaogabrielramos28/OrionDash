@@ -23,13 +23,23 @@ export class OrderPaymentConsumer implements OnModuleInit {
       },
     );
 
-    await this.rabbit.subscribe('orders.payment.failed', async (data) => {
+    await this.rabbit.subscribe(QUEUES.ORDER_PAYMENT_FAILED, async (data) => {
       this.logger.log(
         `❌ Pagamento negado para o pedido: ${data.orderId}. Motivo: ${data.reason}`,
       );
       await this.orderService.updateOrderStatus(
         data.orderId,
         OrderStatus.PAYMENT_FAILED,
+      );
+    });
+
+    await this.rabbit.subscribe(QUEUES.DISPATCH_FAILED, async (data) => {
+      this.logger.log(
+        `❌ Falha na entrega para o pedido: ${data.orderId}. Motivo: ${data.reason}`,
+      );
+      await this.orderService.updateOrderStatus(
+        data.orderId,
+        OrderStatus.REFUNDED,
       );
     });
   }

@@ -4,5 +4,6 @@ import { CourierGeoService } from './courier-geo.service';
 
 @Module({
   providers: [CourierGeoConsumer, CourierGeoService],
+  exports: [CourierGeoService],
 })
 export class CourierGeoModule {}

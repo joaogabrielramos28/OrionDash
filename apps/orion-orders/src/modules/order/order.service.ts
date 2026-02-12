@@ -125,6 +125,18 @@ export class OrderService {
       });
     }
 
+    if (status === OrderStatus.REFUNDED) {
+      await this.queueService.publish(
+        EXCHANGES.MAIN,
+        ROUTING_KEYS.ORDER_PAYMENT_REFUNDED,
+        {
+          orderId: updatedOrder.id,
+          customerId: updatedOrder.customerId,
+          origin: updatedOrder.deliveryAddress,
+        },
+      );
+    }
+
     return updatedOrder;
   }
 }

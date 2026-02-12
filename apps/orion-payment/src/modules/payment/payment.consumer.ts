@@ -35,5 +35,21 @@ export class PaymentConsumer implements OnModuleInit {
         }
       },
     );
+
+    await this.rabbit.subscribe(
+      QUEUES.ORDER_PAYMENT_REFUNDED,
+      async (data, message) => {
+        this.logger.log(`📥 Recebido pedido de reembolso: ${data.orderId}`);
+        try {
+          await this.paymentService.processRefund(data.orderId);
+        } catch (error) {
+          this.logger.error(
+            `❌ Erro ao processar reembolso do pedido ${data.orderId}`,
+            error,
+          );
+          throw error; // O seu package fará o NACK e mandará para a DLQ
+        }
+      },
+    );
   }
 }
